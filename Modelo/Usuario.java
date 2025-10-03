@@ -7,8 +7,8 @@ public class Usuario {
 
     public Usuario(String username, String contraseña, String nombre) {
         if (username == null || username.isBlank() ||
-            contraseña == null || contraseña.isBlank() ||
-            nombre == null || nombre.isBlank()) {
+                contraseña == null || contraseña.isBlank() ||
+                nombre == null || nombre.isBlank()) {
             throw new IllegalArgumentException("Se requieren datos.");
         }
         this.username = username;
