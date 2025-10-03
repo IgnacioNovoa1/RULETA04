@@ -1,8 +1,5 @@
 package Modelo;
 
-public enum TipoApuesta{
-    Rojo,
-    Negro,
-    Par,
-    Impar,
+public enum TipoApuesta {
+    ROjO, NEGRO, PAR, IMPAR
 }
