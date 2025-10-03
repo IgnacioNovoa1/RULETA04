@@ -1,4 +1,5 @@
 package Modelo;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,33 +15,29 @@ public class Ruleta {
     }
 
     public Ruleta(int saldoInicial) {
-        if (saldoInicial < 0){
-            saldoInicial = 0;
-            this.saldo = saldoInicial;
-        } else {
-            this.saldo = saldoInicial;
-        }
+        this.saldo = saldoInicial;
     }
 
-    public int getSaldo(){
+    public int getSaldo() {
         return saldo;
     }
-    public void setSaldo(int nuevoSaldo){
-        this.saldo = nuevoSaldo;
+
+    public void setSaldo(int nuevoSaldo) {
+        this.saldo += nuevoSaldo;
     }
 
-    public void depositar(int monto){
-        if (monto <= 0) {
-            throw new IllegalArgumentException("Monto debe ser positivo");
-            setSaldo(monto);
+    public void depositar(int monto) {
+        setSaldo(monto);
+    }
+
+    public Resultado girar(TipoApuesta apuesta, int montoApuesta) {
+        int numero = random.nextInt(37) + 1;
+        String color;
+        if (esRojo(numero) == true) {
+            color = "ROJO";
         } else {
-            setSaldo(monto);
+            color = "NEGRO";
         }
-    }
-
-    public Resultado girar(TipoApuesta apuesta) {
-        int numero = random.nextInt(37); // 0..36
-        String color = (numero == 0) ? "VERDE" : (esRojo(numero) ? "ROJO" : "NEGRO");
 
         boolean acierto = switch (apuesta) {
             case ROJO -> color.equals("ROJO");
@@ -48,18 +45,18 @@ public class Ruleta {
             case PAR -> (numero != 0) && (numero % 2 == 0);
             case IMPAR -> (numero % 2 != 0);
         };
+        if (acierto == true) {
+            setSaldo(montoApuesta * 2);
+        } else {
+            setSaldo(-montoApuesta);
+        }
 
-        double ganancia = acierto ? 1000.0 : -100.0;
-
-        ajustarSaldo((int) -ganancia); 
-
-        Resultado r = new Resultado(numero, color, acierto, ganancia, apuesta);
+        Resultado r = new Resultado(numero, color, acierto, montoApuesta, apuesta);
         resultados.add(r);
         return r;
     }
 
     private boolean esRojo(int numero) {
-        if (numero == 0) return false;
         return (numero % 2 != 0);
     }
 
